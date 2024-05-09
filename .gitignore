@@ -1,0 +1,5 @@
+node_modules/*
+*.swp
+logs/*
+*.log
+package-lock.json
