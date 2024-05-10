@@ -1,7 +1,7 @@
 {
   "name": "files_manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a file manager application built using Nodejs and NoSQL DB",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
