@@ -9,16 +9,17 @@ const { promisify } = require('util');
 class RedisClient {
   constructor() {
     this.client = createClient();
+    this.conn = false;
 
     // When there is an err
     this.client.on('error', (error) => {
+      this.conn = false;
       console.log(`Client not connected to the Redis server: ${error.message || error.toString()}`);
     });
 
     // When the connection is successful
-    this.isConnected = false;
     this.client.on('connect', () => {
-      this.isConnected = true;
+      this.conn = true;
     });
   }
 
@@ -27,7 +28,7 @@ class RedisClient {
    * @returns {bool} true if connected successfully else false.
    */
   isAlive() {
-    return this.isConnected;
+    return this.conn;
   }
 
   /**
@@ -37,7 +38,7 @@ class RedisClient {
    * or null if the key does not exist.
    */
   async get(key) {
-    const asyncObj = promisify(this.client.get).bind(this.client);
+    const asyncObj = await promisify(this.client.GET).bind(this.client);
     const result = await asyncObj(key);
     return result;
   }
@@ -49,7 +50,7 @@ class RedisClient {
    * @param {number} duration - The duration in seconds until the element expires.
    */
   async set(key, value, duration) {
-    const asyncObj = promisify(this.client.set).bind(this.client);
+    const asyncObj = await promisify(this.client.SET).bind(this.client);
     await asyncObj(key, value, 'EX', duration);
   }
 
@@ -58,7 +59,7 @@ class RedisClient {
    * @param {string} key - The key of the element to delete.
    */
   async del(key) {
-    const asyncObj = promisify(this.client.del).bind(this.client);
+    const asyncObj = await promisify(this.client.del).bind(this.client);
     await asyncObj(key);
   }
 }

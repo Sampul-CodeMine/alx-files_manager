@@ -1,9 +1,8 @@
 import dbClient from '../utils/db';
 
-const waitConnection = () => {
+function waitConnection() {
   return new Promise((resolve, reject) => {
     let i = 0;
-    // eslint-disable-next-line no-unused-vars
     const repeatFct = async () => {
       await setTimeout(() => {
         i += 1;
@@ -16,11 +15,14 @@ const waitConnection = () => {
         }
       }, 1000);
     };
+    repeatFct();
   });
-};
+}
 
 (async () => {
   console.log(dbClient.isAlive());
   await waitConnection();
   console.log(dbClient.isAlive());
+  console.log(await dbClient.nbUsers());
+  console.log(await dbClient.nbFiles());
 })();
