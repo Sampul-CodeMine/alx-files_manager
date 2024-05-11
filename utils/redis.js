@@ -4,7 +4,7 @@ const { createClient } = require('redis');
 const { promisify } = require('util');
 
 /**
- * This is a class that performs operations ith the Redis Server
+ * This is a class that performs operations with the Redis Server
  */
 class RedisClient {
   constructor() {
