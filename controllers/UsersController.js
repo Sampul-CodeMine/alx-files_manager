@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
-import dbClient from '../utils/db';
-import redisClient from '../utils/redis';
+import dbClient from '../utils/db.js';
+import redisClient from '../utils/redis.js';
 import sha1 from 'sha1';
 import Queue from 'bull';
 import { ObjectId } from 'mongodb';
@@ -23,8 +23,7 @@ class UsersController {
 
     const hashPassword = sha1(password);
 
-    const insertUser = await (await dbClient.usersCollection)
-      .insertOne({ email, password: hashPassword });
+    const insertUser = await (await dbClient.usersCollection.insertOne({ email, password: hashPassword }));
     const insertedId = insertUser.insertedId.toString();
     userQueue.add({ insertedId });
     const user = {

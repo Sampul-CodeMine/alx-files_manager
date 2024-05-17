@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
 import express from 'express';
-import routerController from './routes/index';
+import routerController from './routes/index.js';
 
 const server = express();
 const PORT = (process.env.PORT) ? process.env.PORT : 5000;

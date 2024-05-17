@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
-import redisClient from '../utils/redis';
-import dbClient from '../utils/db';
+import redisClient from '../utils/redis.js';
+import dbClient from '../utils/db.js';
 import { v4 as uuidv4 } from 'uuid';
 import sha1 from 'sha1';
 import { ObjectId } from 'mongodb';
@@ -17,14 +17,13 @@ class AuthController {
     const encodedCredentials = authHeader.split(' ')[1];
     const decodedCredentials = Buffer.from(encodedCredentials, 'base64').toString('utf-8');
     const [email, password] = decodedCredentials.split(':');
-    const user = await (await dbClient.usersCollection)
-      .findOne({ email, password: sha1(password) });
+    const user = await (await dbClient.usersCollection.findOne({ email, password: sha1(password) }));
 
     if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
     const token = uuidv4();
 
-    await redisClient.set(`auth_${token}`, user._id.toString(), 24 * 60 * 60);
+    await (await redisClient.set(`auth_${token}`, user._id.toString(), 24 * 60 * 60));
     return res.status(200).json({ token });
   }
 
