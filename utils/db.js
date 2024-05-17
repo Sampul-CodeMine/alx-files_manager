@@ -11,7 +11,10 @@ const dbURL = `mongodb://${dbHost}:${dbPort}`;
  * This is a class that performs operations with the MongoDB
  */
 class DBClient {
-  constructor() {
+  /**
+   * This is the constructor to the DBClient to establish connection to MongoDB
+   */
+  constructor () {
     MongoClient.connect(dbURL, { useUnifiedTopology: true }, (err, databaseClient) => {
       if (err) {
         console.log(err.message);
@@ -24,16 +27,28 @@ class DBClient {
     });
   }
 
-  isAlive() {
+  /**
+   * Function to chcek if the db client is still connected to the DB
+   * @returns {boolean} True if the connection is alive else False
+   */
+  isAlive () {
     return Boolean(this.db);
   }
 
-  async nbUsers() {
+  /**
+   * Method to get the counts of documents in the users collection
+   * @returns {number} number of documents for users
+   */
+  async nbUsers () {
     const data = await this.usersCollection.countDocuments();
     return data;
   }
 
-  async nbFiles() {
+  /**
+   * Method to get the counts of documents in the files collection
+   * @returns {number} number of documents for files
+   */
+  async nbFiles () {
     const data = await this.filesCollection.countDocuments();
     return data;
   }
